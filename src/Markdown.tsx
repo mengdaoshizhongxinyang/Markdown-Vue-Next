@@ -1,3 +1,5 @@
+import highlightjs from "highlight.js";
+import mermaid from "mermaid";
 import markdownIt from 'markdown-it'
 import emoji from 'markdown-it-emoji'
 import subscript from 'markdown-it-sub'
@@ -10,11 +12,21 @@ import mark from 'markdown-it-mark'
 import toc from 'markdown-it-toc-and-anchor'
 import katex from 'markdown-it-katex'
 import tasklists from 'markdown-it-task-lists'
-import { defineComponent, h, watch, ref } from "vue";
+import { defineComponent, h, watch, ref, nextTick } from "vue";
 interface Props {
   source: string
 }
-let md = new markdownIt();
+
+let util=new markdownIt()
+let md = new markdownIt({
+  highlight:function (str,lang){
+    if(lang=="mermaid"){
+      return '<pre><code><div class="mermaid">' + util.utils.escapeHtml(str) + '</div></code></pre>'
+    }
+    return '<pre><code>' + util.utils.escapeHtml(str) + '</code></pre>';
+  }
+});
+
 md.use(emoji)
   .use(subscript)
   .use(superscript)
@@ -32,7 +44,11 @@ export default defineComponent({
     let root = ref<HTMLDivElement>()
     watch(() => props.source, () => {
       root.value!.innerHTML = md.render(props.source)
+      nextTick(()=>{
+        mermaid.init('.mermaid')
+      })
     })
+    
     return () => h(
       <div ref={root}></div>
     )
