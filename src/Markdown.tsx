@@ -12,22 +12,14 @@ import mark from 'markdown-it-mark'
 import toc from 'markdown-it-toc-and-anchor'
 import katex from 'markdown-it-katex'
 import tasklists from 'markdown-it-task-lists'
-import { defineComponent, h, watch, ref, nextTick } from "vue";
-import mermaidAPI from "mermaid/mermaidAPI";
+import { defineComponent, h, watch, ref, nextTick, reactive } from "vue";
+import markdownItMermaid from "./markdown-it-mermaid";
+import utils from "./utils";
 interface Props {
   source: string
 }
 
-let util=new markdownIt()
-let md = new markdownIt({
-  highlight:function (str,lang){
-    if(lang=="mermaid"){
-      return '<pre><code><div class="mermaid">' + util.utils.escapeHtml(str) + '</div></code></pre>'
-    }
-    return '<pre><code>' + util.utils.escapeHtml(str) + '</code></pre>';
-  }
-});
-
+let md=new markdownIt()
 md.use(emoji)
   .use(subscript)
   .use(superscript)
@@ -39,9 +31,11 @@ md.use(emoji)
   .use(toc)
   .use(katex)
   .use(tasklists)
+  .use(markdownItMermaid)
 export default defineComponent({
-
+  
   setup(props: Props) {
+    console.log(utils.uid())
     mermaid.initialize({
       logLevel: 5,
       startOnLoad: false,
@@ -66,23 +60,21 @@ export default defineComponent({
         useMaxWidth: true,
       },
       class: {},
-      git: {}
+      git: {},
+      themeVariables:{
+        errorTextColor:"#fff",
+        errorBkgColor:"#fff"
+      }
     })
+    const data=reactive({innerHtml:md.render(props.source)})
+    console.log(mermaid)
     let root = ref<HTMLDivElement>()
     watch(() => props.source, () => {
       root.value!.innerHTML = md.render(props.source)
-      nextTick(()=>{
-        try{
-          mermaid.init('.mermaid')
-        }catch(e){
-          console.log(e)
-        }
-        
-      })
     })
     
     return () => h(
-      <div ref={root}></div>
+      <div innerHTML={data.innerHtml}></div>
     )
   },
   props: {
