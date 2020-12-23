@@ -68,9 +68,8 @@ export default defineComponent({
     })
     const data=reactive({innerHtml:md.render(props.source)})
     console.log(mermaid)
-    let root = ref<HTMLDivElement>()
     watch(() => props.source, () => {
-      root.value!.innerHTML = md.render(props.source)
+      data.innerHtml = md.render(props.source)
     })
     
     return () => h(

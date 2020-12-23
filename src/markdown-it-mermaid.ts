@@ -2,11 +2,15 @@ import Mermaid from 'mermaid';
 import utils from './utils';
 import md from "markdown-it";
 
-const MermaidChart = (code:string):string => {
+const MermaidChart = (code:string,errorCode?:string):string => {
   try {
     let needsUniqueId = "render" + utils.uid();
-    Mermaid.mermaidAPI.render(needsUniqueId, code, sc => {code=sc});
-    return `<div class="mermaid">${code}</div>`;
+    if(errorCode==code){
+      return ""
+    }else{
+      Mermaid.mermaidAPI.render(needsUniqueId, code, sc => {code=sc});
+      return `<div class="mermaid">${code}</div>`;
+    }
   } catch (err) {
     const lineNum=err.hash.line
     const newCode=[]
@@ -14,7 +18,7 @@ const MermaidChart = (code:string):string => {
     for(let i=0;i<lineNum;i++){
       newCode.push(arr[i])
     }
-    return MermaidChart(newCode.join('\n'));
+    return MermaidChart(newCode.join('\n'),code);
   }
 }
 
