@@ -1,18 +1,17 @@
-# Contextmenu Vue-next
-contextmenu developed by vue3.0
+# markdown-vue-next
+show markdown developed by vue3.0
 
 # install
 ```
-yarn add contextmenu-vue-next
+yarn add markdown-vue-next
 ```
 or
 ```
-npm install contextmenu-vue-next
+npm install markdown-vue-next
 ```
 
 
 # usage
-
 
 ``` html 
 <template>
@@ -23,7 +22,7 @@ npm install contextmenu-vue-next
 </template>
 
 <script>
-import VueMd from "../";
+import VueMd from "markdown-vue-next";
 export default {
   components:{
     VueMd
@@ -52,11 +51,9 @@ API
 --
 | Props | Description | Type  | Default |
 | :-: | :-: | :-: |  :-: |
-| show(sync) | show or hidden context | Booleam | false |
-| offset |  position of context | Object { left: number, top:number}| {left:0,top:0}
-| menus | contextmenu list | Array | [] |
+| source | content of md | string | "" |
 
-### events
-| Events Name | Description | Arguments |
-| :-: | :-: | :-: |
-| menuItemClick | Callback executed when the menu is clicked | Function(clickedMenuInfo)|
+
+# thanks
+- [markdown-it](https://github.com/markdown-it/markdown-it)
+- [mermaid](https://github.com/mermaid-js/mermaid)
