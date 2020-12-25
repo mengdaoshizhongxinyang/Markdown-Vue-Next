@@ -33,7 +33,6 @@ const MermaidPlugIn = (md :md, opts:mermaidAPI.Config) => {
   md.renderer.rules.fence = (tokens, idx, opts, env, self) => {
     const token = tokens[idx];
     const code = token.content.trim();
-    console.log(token)
     if (token.info.startsWith('mermaid')) {
       return MermaidChart(code);
     }else{
