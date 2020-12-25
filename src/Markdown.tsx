@@ -12,9 +12,8 @@ import mark from 'markdown-it-mark'
 import toc from 'markdown-it-toc-and-anchor'
 import katex from 'markdown-it-katex'
 import tasklists from 'markdown-it-task-lists'
-import { defineComponent, h, watch, ref, nextTick, reactive } from "vue";
+import { defineComponent, h, computed } from "vue";
 import markdownItMermaid from "./markdown-it-mermaid";
-import utils from "./utils";
 interface Props {
   source: string
 }
@@ -35,45 +34,12 @@ md.use(emoji)
 export default defineComponent({
   
   setup(props: Props) {
-    console.log(utils.uid())
-    mermaid.initialize({
-      logLevel: 5,
-      startOnLoad: false,
-      arrowMarkerAbsolute: false,
-      flowchart: {
-        htmlLabels: true,
-        curve: 'linear',
-      },
-      securityLevel:"loose",
-      sequence: {
-        diagramMarginX: 50,
-        diagramMarginY: 10,
-        actorMargin: 50,
-        width: 150,
-        height: 65,
-        boxMargin: 10,
-        boxTextMargin: 5,
-        noteMargin: 10,
-        messageMargin: 35,
-        mirrorActors: true,
-        bottomMarginAdj: 1,
-        useMaxWidth: true,
-      },
-      class: {},
-      git: {},
-      themeVariables:{
-        errorTextColor:"#fff",
-        errorBkgColor:"#fff"
-      }
-    })
-    const data=reactive({innerHtml:md.render(props.source)})
-    console.log(mermaid)
-    watch(() => props.source, () => {
-      data.innerHtml = md.render(props.source)
+    const innerHtml=computed(() => {
+      return md.render(props.source)
     })
     
     return () => h(
-      <div innerHTML={data.innerHtml}></div>
+      <div innerHTML={innerHtml.value}></div>
     )
   },
   props: {

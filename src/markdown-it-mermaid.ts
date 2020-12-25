@@ -3,8 +3,8 @@ import utils from './utils';
 import md from "markdown-it";
 
 const MermaidChart = (code:string,errorCode?:string):string => {
+  let needsUniqueId = "render" + utils.uid();
   try {
-    let needsUniqueId = "render" + utils.uid();
     if(errorCode==code){
       return ""
     }else{
@@ -18,6 +18,8 @@ const MermaidChart = (code:string,errorCode?:string):string => {
     for(let i=0;i<lineNum;i++){
       newCode.push(arr[i])
     }
+    //TODO: need to deal mermaid.js draw error before throw error
+    document.getElementById(needsUniqueId)?.parentElement?.remove()
     return MermaidChart(newCode.join('\n'),code);
   }
 }
@@ -31,10 +33,12 @@ const MermaidPlugIn = (md :md, opts:mermaidAPI.Config) => {
   md.renderer.rules.fence = (tokens, idx, opts, env, self) => {
     const token = tokens[idx];
     const code = token.content.trim();
+    console.log(token)
     if (token.info.startsWith('mermaid')) {
       return MermaidChart(code);
+    }else{
+      return defaultRenderer(tokens, idx, opts, env, self);
     }
-    return defaultRenderer(tokens, idx, opts, env, self);
   }
 }
 
