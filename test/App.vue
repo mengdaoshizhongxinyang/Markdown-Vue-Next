@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import VueMd from "../";
+import VueMd from "../index";
 export default {
   components:{
     VueMd

@@ -1,6 +1,6 @@
 {
   "name": "markdown-vue-next",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "description": "show markdown in vue",
   "main": "index.js",
   "keywords": [
@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "test": "vue-cli-service serve ./test/main.js",
-    "build": "vue-cli-service build --target lib --name markdown-vue index.js"
+    "build": "vue-cli-service build --target lib --name markdown-vue index.ts"
   },
   "author": "mengdaoshizhongxinyang",
   "license": "MIT",

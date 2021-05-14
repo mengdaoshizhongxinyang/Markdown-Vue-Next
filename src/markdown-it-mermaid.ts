@@ -18,7 +18,6 @@ const MermaidChart = (code:string,errorCode?:string):string => {
     for(let i=0;i<lineNum;i++){
       newCode.push(arr[i])
     }
-    //TODO: need to deal mermaid.js draw error before throw error
     document.getElementById(needsUniqueId)?.parentElement?.remove()
     return MermaidChart(newCode.join('\n'),code);
   }
